@@ -1,0 +1,88 @@
+{
+    "tables": {
+        "place": {
+            "tableName": "place",
+            "schema": {
+                "place_id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "place_id",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "place_name": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "place_name",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "place_location": {
+                    "allowNull": false,
+                    "field": "place_location",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "place_phonenumber": {
+                    "allowNull": true,
+                    "field": "place_phonenumber",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "place_category": {
+                    "allowNull": false,
+                    "field": "place_category",
+                    "seqType": "Sequelize.STRING(45)"
+                }
+            },
+            "indexes": []
+        },
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "UserId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "UserId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "FirstName": {
+                    "field": "FirstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "LastName": {
+                    "field": "LastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Email": {
+                    "unique": true,
+                    "field": "Email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Username": {
+                    "unique": true,
+                    "field": "Username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Password": {
+                    "field": "Password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Admin": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "Admin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "Deleted": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 1
+}
