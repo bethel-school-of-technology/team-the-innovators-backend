@@ -80,8 +80,6 @@ router.get('/logout', function (req, res, next) {
   res.send('Logged out');
 });
 
-router.get('/places', function(req, res, next){
-console.log('this place works!')
-});
+
 
 module.exports = router;
