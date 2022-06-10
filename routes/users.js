@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const authService = require("../services/auth");
-
+const mysql = require('mysql2');
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -74,12 +74,24 @@ router.get('/profile', function (req, res, next) {
   }
 });
 
+router.get("/", function(req, res, next){
+  if(req.user && req.user.Admin){
+   //findAll
+   //render and send all users to the view 
+  } else{
+    res.redirect("unauthorized")
+  }
+});
+
 // LOGOUT
 router.get('/logout', function (req, res, next) {
   res.cookie('jwt', "", { expires: new Date(0) });
   res.send('Logged out');
 });
 
+//GET /unauthorized
+//messages stating user is unauthorized to view that page
+//link to /profile
 
 
 module.exports = router;

@@ -45,4 +45,8 @@ models.sequelize.sync().then(() => {
   console.log("Hotspots DB connnected!!")
 })
 
+models.sequelize.sync().then(function(){
+  console.log("Database connection established...");
+});
+
 module.exports = app;
