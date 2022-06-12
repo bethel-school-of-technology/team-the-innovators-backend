@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require("../models")
+const { Op } = require("sequelize");
 
 /* GET places listing. */
 router.get('/', function(req, res, next) {
@@ -9,6 +10,24 @@ router.get('/', function(req, res, next) {
                                                    
   })
 
+
+});
+
+router.get('/search/:query', function(req, res, next) {
+  console.log(req.params.query);
+
+  models.place.findAll({
+    where: {
+
+      [Op.or]: [
+        { place_location: {[Op.like]: '%' + req.params.query + '%' } },
+        { place_name: {[Op.like]: '%' + req.params.query + '%' } }
+      ],
+      
+    }
+  }).then(places => {
+    res.json(places);
+  });
 
 });
 

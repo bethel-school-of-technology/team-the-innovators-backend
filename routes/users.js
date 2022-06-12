@@ -31,7 +31,7 @@ router.post('/signup', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  models.users.findOne({
+  models.user.findOne({
     where: {
       Username: req.body.username
     }
