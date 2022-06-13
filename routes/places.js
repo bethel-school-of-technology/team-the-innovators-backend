@@ -39,15 +39,16 @@ router.post('/places', function(req, res, next) {
 // });
 
 
-// router.post("/makePlace", (req, res) => {
+router.post("/makePlace", (req, res) => {
 
-models.place.create({
-  place_name: req.body.name,
-  place_location: req.body.location,
-  place_phonenumber: req.body.number,
-  place_category: req.body.category
-}).then(response => {
-  res.json(response)
+  models.place.create({
+    place_name: req.body.name,
+    place_location: req.body.location,
+    place_phonenumber: req.body.number,
+    place_category: req.body.category
+  }).then(response => {
+    res.json(response)
+  });
 });
 
 module.exports = router;
