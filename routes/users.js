@@ -31,7 +31,7 @@ router.post('/signup', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  models.users.findOne({
+  models.user.findOne({
     where: {
       Username: req.body.username
     }
@@ -46,7 +46,11 @@ router.post('/login', function (req, res, next) {
       if (passwordMatch) {
         let token = authService.signUser(user);
         res.cookie('jwt', token);
-        res.send('Login successful');
+        res.json({
+          message:'Login successful',
+          status: 200,
+          token: token
+        });
       } else {
         console.log('Wrong password');
         res.send('Wrong password');
@@ -89,9 +93,6 @@ router.get('/logout', function (req, res, next) {
   res.send('Logged out');
 });
 
-//GET /unauthorized
-//messages stating user is unauthorized to view that page
-//link to /profile
 
 
 module.exports = router;
