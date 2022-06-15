@@ -1,55 +1,62 @@
 var express = require('express');
 var router = express.Router();
 const authService = require("../services/auth");
+let models = require('../models');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
-
 
 router.post('/signup', function (req, res, next) {
-  models.users
+  models.user
     .findOrCreate({
       where: {
-        Username: req.body.username
+        Username: req.body.Username
       },
       defaults: {
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: authService.hashPassword(req.body.password) //<--- Change to this code here
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        Email: req.body.Email,
+        Password: authService.hashPassword(req.body.Password)
       }
     })
     .spread(function (result, created) {
       if (created) {
-        res.send('User successfully created');
+        res.json({
+          message: "Signup Successful"
+        });
       } else {
-        res.send('This user already exists');
+        res.json({
+          message: "User Not Created"
+        });
       }
     });
 });
 
 router.post('/login', function (req, res, next) {
-  models.users.findOne({
+  models.user.findOne({
     where: {
       Username: req.body.username
     }
   }).then(user => {
     if (!user) {
-      console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
+      res.json({
+        message: "User Not Found",
+        status: 500
       });
     } else {
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
       if (passwordMatch) {
         let token = authService.signUser(user);
-        res.cookie('jwt', token);
-        res.send('Login successful');
+        res.json({
+          message: "Login Successful",
+          status: 200,
+          token
+        });
       } else {
-        console.log('Wrong password');
-        res.send('Wrong password');
+        console.log('Wrong Password');
+        res.json({
+          message: "Wrong Password",
+          status: 403
+        });
       }
     }
   });
@@ -57,20 +64,30 @@ router.post('/login', function (req, res, next) {
 
 // PROFILE
 router.get('/profile', function (req, res, next) {
-  let token = req.cookies.jwt;
+  console.log(req.headers);
+  let token = req.headers.authorization;
+  console.log(token);
   if (token) {
     authService.verifyUser(token)
       .then(user => {
         if (user) {
-          res.send(JSON.stringify(user));
+          res.json({
+            message: "Profile Loaded Successfully",
+            status: 200,
+            user
+          });
         } else {
-          res.status(401);
-          res.send('Invalid authentication token');
+          res.json({
+            message: "Invalid Token",
+            status: 403
+          });
         }
       });
   } else {
-    res.status(401);
-    res.send('Must be logged in');
+    res.json({
+      message: "Missing Token",
+      status: 403
+    });
   }
 });
 
