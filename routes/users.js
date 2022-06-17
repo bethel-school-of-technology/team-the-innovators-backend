@@ -1,17 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const authService = require("../services/auth");
-<<<<<<< HEAD
 const mysql = require('mysql2');
 var models = require("../models");
 /* GET users listing. */
 
 
-=======
-let models = require('../models');
-
-/* GET users listing. */
->>>>>>> 04510a7f1fcade38f9aaad27dff3bbacc1976217
 
 router.post('/signup', function (req, res, next) {
   models.user
@@ -20,17 +14,10 @@ router.post('/signup', function (req, res, next) {
         Username: req.body.Username
       },
       defaults: {
-<<<<<<< HEAD
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: authService.hashPassword(req.body.password) 
-=======
         FirstName: req.body.FirstName,
         LastName: req.body.LastName,
         Email: req.body.Email,
         Password: authService.hashPassword(req.body.Password)
->>>>>>> 04510a7f1fcade38f9aaad27dff3bbacc1976217
       }
     })
     .spread(function (result, created) {
@@ -61,10 +48,6 @@ router.post('/login', function (req, res, next) {
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
       if (passwordMatch) {
         let token = authService.signUser(user);
-<<<<<<< HEAD
-        
-=======
->>>>>>> 04510a7f1fcade38f9aaad27dff3bbacc1976217
         res.json({
           message: "Login Successful",
           status: 200,

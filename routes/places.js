@@ -47,18 +47,4 @@ router.post("/makePlace", (req, res) => {
 });
 
 
-router.post("/createReview", (req, res, next) => {
-  models.review.create({
-    review_message: req.body.review_message,
-    rating: req.body.rating
 
-  }).then(response => {
-    res.json({
-      message: "created review",
-      status: 200,
-      review: response
-    })
-  })
-})
-
-module.exports = router;
