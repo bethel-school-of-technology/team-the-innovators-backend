@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.place);
     }
   }
   review.init({
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     rating: DataTypes.INTEGER,
+    placePlaceId: DataTypes.INTEGER.UNSIGNED,
     review_message: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN
   }, {

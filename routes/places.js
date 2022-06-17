@@ -7,8 +7,8 @@ const { response } = require('../app');
 /* GET places listing. */
 router.get('/', function (req, res, next) {
 
-  models.place.findAll({}).then(response => {
-
+  models.place.findAll({}).then(places => {
+    res.json(places);
   })
 
 

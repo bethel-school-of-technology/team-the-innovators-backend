@@ -7,7 +7,8 @@ const { response } = require('../app');
 router.post("/createReview", (req, res, next) => {
     models.review.create({
       review_message: req.body.review_message,
-      rating: req.body.rating
+      rating: req.body.rating,
+      placePlaceId: req.body.placePlaceId
   
     }).then(response => {
       res.json({
