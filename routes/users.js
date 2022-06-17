@@ -44,8 +44,12 @@ router.post('/login', function (req, res, next) {
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
       if (passwordMatch) {
         let token = authService.signUser(user);
-        res.cookie('jwt', token);
-        res.json({message: 'Login successful', jwt: token});
+        
+        res.json({
+          message:'Login successful',
+          status: 200,
+          token: token
+        });
       } else {
         console.log('Wrong password');
         res.send('Wrong password');
@@ -110,9 +114,6 @@ router.get('/logout', function (req, res, next) {
   res.send('Logged out');
 });
 
-//GET /unauthorized
-//messages stating user is unauthorized to view that page
-//link to /profile
 
 
 module.exports = router;
