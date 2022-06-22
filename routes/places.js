@@ -7,8 +7,8 @@ const { response } = require('../app');
 /* GET places listing. */
 router.get('/', function (req, res, next) {
 
-  models.place.findAll({}).then(response => {
-
+  models.place.findAll({}).then(places => {
+    res.json(places);
   })
 
 
@@ -36,29 +36,15 @@ router.get('/search/:query', function (req, res, next) {
 router.post("/makePlace", (req, res) => {
 
   models.place.create({
-    place_name: req.body.name,
-    place_location: req.body.location,
-    place_phonenumber: req.body.number,
-    place_category: req.body.category
+    place_name: req.body.place_name,
+    place_location: req.body.place_location,
+    place_phonenumber: req.body.place_phonenumber,
+    place_category: req.body.place_category
   }).then(response => {
     res.json(response)
   })
 
 });
 
-
-router.post("/createReview", (req, res, next) => {
-  models.review.create({
-    review_message: req.body.review_message,
-    rating: req.body.rating
-
-  }).then(response => {
-    res.json({
-      message: "created review",
-      status: 200,
-      review: response
-    })
-  })
-})
 
 module.exports = router;
