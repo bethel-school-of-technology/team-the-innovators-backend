@@ -9,15 +9,15 @@
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "Password1!",
+    "database": "hotspots",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": "Password1!",
+    "database": "hotspots",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

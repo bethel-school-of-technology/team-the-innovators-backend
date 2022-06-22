@@ -43,8 +43,15 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({
+  force: false
+}).then(() => {
   console.log("Hotspots DB connnected!!")
 })
+
+
+models.sequelize.sync().then(function(){
+  console.log("Database connection established...");
+});
 
 module.exports = app;
