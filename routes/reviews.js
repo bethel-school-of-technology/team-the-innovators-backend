@@ -29,6 +29,25 @@ router.post("/createReview", (req, res, next) => {
       status: 200,
       review: response
     })
+  });
+
+  router.put("/editReview", (req, res, next) => {
+
+    models.review.findByPk(req.body.reviewId).then(review => {
+      //res.json(review);
+      review.review_message = req.body.review_message;
+      review.rating = req.body.rating;
+      review.save().then(() => {
+        res.json({
+          message: "edited review",
+          status: 200,
+          review: review
+        })
+      });
+      
+    })
+
+    
   })
 })
 
