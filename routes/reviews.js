@@ -32,51 +32,6 @@ router.post("/createReview", (req, res, next) => {
   })
 })
 
-// User creates review
-// router.post('/makeReview', function (req, res, next) {
-  // Get the currently logged in user ID
-  // console.log(req.headers);
-  // let token = req.headers.authorization;
-  // console.log(token);
-  // if (token) {
-  //   authService.verifyUser(token)
-  //     .then(user => {
-  //       if (user) {
-  //         models.review.findOrCreate({
-  //           where: { reviewId: req.body.reviewId },
-  //           defaults: {
-  //             review_message: req.body.review_message,
-  //             // UserId: user.UserId
-  //           }
-  //         }).spread(function (result, created) {
-  //           if (created) {
-  //             res.json({
-  //               message: "Review created",
-  //               status: 200
-  //             });
-  //           } else {
-  //             res.send('Review already exits');
-  //           }
-  //         });
-  //       }
-  //     })
-  // }
-// });
-
-// User edits review
-// router.put('/review/:id', function (req, res, next) {
-//   console.log('===> Body');
-//   console.log(req.params.id);
-//   models.review.update(req.body, {where: {
-//     reviewId: req.params.id
-//   }}).then(result => {
-//     res.json({
-//       message: "Review edited",
-//       status: 200
-//     });
-//   })
-// });
-
 // View all reviews if admin
 router.get('/admin/reviews', function (req, res, next) {
   console.log(req.headers);
