@@ -14,8 +14,6 @@ router.delete("/deleted/:id", (req, res, next) => {
 
 });
 
-
-
 router.post("/createReview", (req, res, next) => {
   models.review.create({
     review_message: req.body.review_message,
@@ -30,26 +28,23 @@ router.post("/createReview", (req, res, next) => {
       review: response
     })
   });
+});
 
-  router.put("/editReview", (req, res, next) => {
+router.put("/editReview", (req, res, next) => {
 
-    models.review.findByPk(req.body.reviewId).then(review => {
-      //res.json(review);
-      review.review_message = req.body.review_message;
-      review.rating = req.body.rating;
-      review.save().then(() => {
-        res.json({
-          message: "edited review",
-          status: 200,
-          review: review
-        })
-      });
-      
-    })
-
-    
-  })
-})
+  models.review.findByPk(req.body.reviewId).then(review => {
+    //res.json(review);
+    review.review_message = req.body.review_message;
+    review.rating = req.body.rating;
+    review.save().then(() => {
+      res.json({
+        message: "edited review",
+        status: 200,
+        review: review
+      })
+    });
+  })  
+});
 
 // View all reviews if admin
 router.get('/admin/reviews', function (req, res, next) {
