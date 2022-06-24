@@ -6,55 +6,61 @@ const mysql = require('mysql2');
 var models = require("../models");
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
 
-
-
-
+//Sign Up
 router.post('/signup', function (req, res, next) {
-  models.users
+  models.user
     .findOrCreate({
       where: {
-        Username: req.body.username
+        Username: req.body.Username
       },
       defaults: {
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: authService.hashPassword(req.body.password) //<--- Change to this code here
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        Email: req.body.Email,
+        Password: authService.hashPassword(req.body.Password)
       }
     })
     .spread(function (result, created) {
       if (created) {
-        res.send('User successfully created');
+        res.json({
+          message: "Signup Successful"
+        });
       } else {
-        res.send('This user already exists');
+        res.json({
+          message: "User Not Created"
+        });
       }
     });
 });
 
+//Log In
 router.post('/login', function (req, res, next) {
-  models.users.findOne({
+  models.user.findOne({
     where: {
       Username: req.body.username
     }
   }).then(user => {
     if (!user) {
-      console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
+      res.json({
+        message: "User Not Found",
+        status: 500
       });
     } else {
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
       if (passwordMatch) {
         let token = authService.signUser(user);
-        res.cookie('jwt', token);
-        res.send('Login successful');
+        res.json({
+          message: "Login Successful",
+          status: 200,
+          token
+        });
       } else {
-        console.log('Wrong password');
-        res.send('Wrong password');
+        console.log('Wrong Password');
+        res.json({
+          message: "Wrong Password",
+          status: 403
+        });
       }
     }
   });
@@ -62,20 +68,30 @@ router.post('/login', function (req, res, next) {
 
 // PROFILE
 router.get('/profile', function (req, res, next) {
-  let token = req.cookies.jwt;
+  console.log(req.headers);
+  let token = req.headers.authorization;
+  console.log(token);
   if (token) {
     authService.verifyUser(token)
       .then(user => {
         if (user) {
-          res.send(JSON.stringify(user));
+          res.json({
+            message: "Profile Loaded Successfully",
+            status: 200,
+            user
+          });
         } else {
-          res.status(401);
-          res.send('Invalid authentication token');
+          res.json({
+            message: "Invalid Token",
+            status: 403
+          });
         }
       });
   } else {
-    res.status(401);
-    res.send('Must be logged in');
+    res.json({
+      message: "Missing Token",
+      status: 403
+    });
   }
 });
 
@@ -116,6 +132,60 @@ router.get('/logout', function (req, res, next) {
   res.send('Logged out');
 });
 
+// View all users if admin
+router.get('/admin/users', function (req, res, next) {
+  console.log(req.headers);
+  let token = req.headers.authorization;
+  console.log(token);
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user.Admin) {
+          models.user
+            .findAll({ where: { Deleted: false }, raw: true })
+            .then(usersFound => 
+              res.json({
+                message: "Users Found",
+                status: 200,
+                users: usersFound }
+              ));
+        } else {
+          res.send('Unauthorized')
+        }
+      });
+  } else {
+    res.redirect('/users/login');
+  }
+});
 
+// 'Delete' user if an admin
+router.delete('/admin/users/:id', function (req, res, next) {
+  console.log('Enter Delete...');
+  console.log(':id ' + req.params.id);
+  let userId = parseInt(req.params.id);
+  console.log('Before Checking for Admin');
+  // Verify Admin 
+  let token = req.headers.authorization;
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user.Admin) {
+          // Admin is logged in
+          console.log('We have an Admin!');
+          models.user
+            .update(
+              { Deleted: true },
+              { where: { UserId: userId } },
+              { raw: true }
+            )
+            .then(response => {
+              res.json({message:'User deleted'});
+            });
+        } else {
+          res.json({message:'Unauthorized'});
+        }
+      })
+  }
+});
 
 module.exports = router;
