@@ -12,11 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.place);
+      this.belongsTo(models.user);
     }
   }
   review.init({
     reviewId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER (100),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
