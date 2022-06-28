@@ -56,24 +56,24 @@ var migrationCommands = [{
             {}
         ]
     },
-    {
-        fn: "addColumn",
-        params: [
-            "users",
-            "userUserId",
-            {
-                "type": Sequelize.INTEGER,
-                "field": "userUserId",
-                "onUpdate": "CASCADE",
-                "onDelete": "SET NULL",
-                "references": {
-                    "model": "users",
-                    "key": "UserId"
-                },
-                "allowNull": true
-            }
-        ]
-    }
+    // {
+    //     fn: "addColumn",
+    //     params: [
+    //         "users",
+    //         "userUserId",
+    //         {
+    //             "type": Sequelize.INTEGER,
+    //             "field": "userUserId",
+    //             "onUpdate": "CASCADE",
+    //             "onDelete": "SET NULL",
+    //             "references": {
+    //                 "model": "users",
+    //                 "key": "UserId"
+    //             },
+    //             "allowNull": true
+    //         }
+    //     ]
+    // }
 ];
 
 module.exports = {

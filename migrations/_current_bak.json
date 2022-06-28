@@ -44,6 +44,12 @@
                     "field": "reviewId",
                     "seqType": "Sequelize.INTEGER(100)"
                 },
+                "UserId": {
+                    "model": "users",
+                    "key": "UserId",
+                    "field": "UserId",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "rating": {
                     "field": "rating",
                     "seqType": "Sequelize.INTEGER"
@@ -131,6 +137,5 @@
             "indexes": []
         }
     },
-    "revision": 2
-} 
-
+    "revision": 3
+}

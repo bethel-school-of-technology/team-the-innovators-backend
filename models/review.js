@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.INTEGER,
     placePlaceId: DataTypes.INTEGER.UNSIGNED,
     review_message: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
     deleted: DataTypes.BOOLEAN
   }, {
     sequelize,
