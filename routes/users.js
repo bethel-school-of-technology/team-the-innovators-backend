@@ -38,7 +38,7 @@ router.post('/signup', function (req, res, next) {
 router.post('/login', function (req, res, next) {
   models.user.findOne({
     where: {
-      Username: req.body.username
+      Username: req.body.Username
     }
   }).then(user => {
     if (!user) {
@@ -47,7 +47,7 @@ router.post('/login', function (req, res, next) {
         status: 500
       });
     } else {
-      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+      let passwordMatch = authService.comparePasswords(req.body.Password, user.Password);
       if (passwordMatch) {
         let token = authService.signUser(user);
         res.json({
