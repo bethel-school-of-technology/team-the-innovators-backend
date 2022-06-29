@@ -19,7 +19,8 @@ router.post("/createReview", (req, res, next) => {
     review_message: req.body.review_message,
     rating: req.body.rating,
     placePlaceId: req.body.placePlaceId,
-    deleted: 0
+    deleted: 0,
+    user: UserId
 
   }).then(response => {
     res.json({
