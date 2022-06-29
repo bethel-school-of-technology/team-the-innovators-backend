@@ -15,20 +15,40 @@ router.delete("/deleted/:id", (req, res, next) => {
 });
 
 router.post("/createReview", (req, res, next) => {
-  models.review.create({
-    review_message: req.body.review_message,
-    rating: req.body.rating,
-    placePlaceId: req.body.placePlaceId,
-    deleted: 0,
-    user: UserId
-
-  }).then(response => {
-    res.json({
-      message: "created review",
-      status: 200,
-      review: response
-    })
-  });
+  let token = req.headers.authorization;
+  authService.verifyUser(token)
+  .then(user => {
+    if (user) {
+      models.user.findOne(
+       { where: {UserId: user.UserId },
+       include: [{
+         model: models.place,
+         required: false
+       }]
+      })
+      .then(placesFound => {
+        console.log(placesFound)
+        models.review.create({
+          review_message: req.body.review_message,
+          rating: req.body.rating,
+          placePlaceId: placesFound.place_id,
+          //deleted: 0, // updated model to set default value instead
+          userId: user.UserId
+        }).then(response => {
+          res.json({
+            message: "created review",
+            status: 200,
+            review: response
+          })
+        });
+      })
+    } else {
+      res.json({
+        message: "Token not verified",
+        status: 406
+      })
+    }
+  })
 });
 
 // router.put("/editReview", (req, res, next) => {
