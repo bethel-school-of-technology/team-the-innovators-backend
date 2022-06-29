@@ -14,6 +14,13 @@ router.get('/', function (req, res, next) {
 
 });
 
+router.get('/:id', function (req, res, next) {
+
+  models.place.findByPk(req.params.id).then(places => {
+    res.json(places);
+  })
+});
+
 router.get('/search/:query', function (req, res, next) {
   console.log(req.params.query);
 
@@ -22,7 +29,8 @@ router.get('/search/:query', function (req, res, next) {
 
       [Op.or]: [
         { place_location: { [Op.like]: '%' + req.params.query + '%' } },
-        { place_name: { [Op.like]: '%' + req.params.query + '%' } }
+        { place_name: { [Op.like]: '%' + req.params.query + '%' } },
+        { place_category: { [Op.like]: '%' + req.params.query + '%' } }
       ],
 
     }
