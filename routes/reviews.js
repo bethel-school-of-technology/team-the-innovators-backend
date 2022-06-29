@@ -51,20 +51,82 @@ router.post("/createReview", (req, res, next) => {
   })
 });
 
-router.put("/editReview", (req, res, next) => {
+// router.put("/editReview", (req, res, next) => {
 
-  models.review.findByPk(req.body.reviewId).then(review => {
-    //res.json(review);
-    review.review_message = req.body.review_message;
-    review.rating = req.body.rating;
-    review.save().then(() => {
+//   models.review.findByPk(req.body.reviewId).then(review => {
+//     //res.json(review);
+//     review.review_message = req.body.review_message;
+//     review.rating = req.body.rating;
+//     review.save().then(() => {
+//       res.json({
+//         message: "edited review",
+//         status: 200,
+//         review: review
+//       })
+//     });
+//   })
+// });
+
+// User edits review
+router.put('/editReview/:id', function (req, res, next) {
+  console.log(req.params.id);
+  models.review.update(req.body, {where: {
+    reviewId: req.params.id
+  }}).then(result => {
+    res.json({
+      message: "Review edited",
+      status: 200,
+      result
+    });
+  })
+});
+
+// Get review by reviewId
+
+router.get('/review/:id', function (req, res, next) {
+  let reviewId = parseInt(req.params.id);
+  models.review
+    .find({
+      where: {
+        reviewId: reviewId
+      },
+      include: [models.user]
+    })
+    .then(reviewFound => {
       res.json({
-        message: "edited review",
+        message: "Review Found",
         status: 200,
-        review: review
+        review: reviewFound
       })
     });
-  })  
+});
+
+// View all reviews by User Id
+router.get('/user/reviews', function (req, res, next) {
+  let token = req.headers.authorization;
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user) {
+          models.review
+            .findAll({
+              where: { userUserId: user.UserId, Deleted: false }
+            })
+            .then(reviewsFound =>
+              res.json({
+                message: "Reviews Found",
+                status: 200,
+                reviews: reviewsFound
+              })
+            );
+        } else {
+          res.status(401);
+          res.send('Invalid authentification token');
+        }
+      });
+  } else {
+    res.send('Unable to retrieve posts');
+  }
 });
 
 // View all reviews if admin
