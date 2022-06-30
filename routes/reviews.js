@@ -108,6 +108,23 @@ router.get('/user/reviews', function (req, res, next) {
   }
 });
 
+
+//review by place id
+router.get('/place/:id', function (req, res, next) {
+          models.review
+            .findAll({
+              where: { placePlaceId: req.params.id}
+            })
+            .then(reviewsFound =>
+              res.json({
+                message: "Reviews Found",
+                status: 200,
+                reviews: reviewsFound
+              })
+            );
+        });
+
+
 // View all reviews if admin
 router.get('/admin/reviews', function (req, res, next) {
   console.log(req.headers);
