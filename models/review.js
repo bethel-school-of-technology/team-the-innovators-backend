@@ -23,9 +23,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     rating: DataTypes.INTEGER,
-    placePlaceId: DataTypes.INTEGER.UNSIGNED,
     review_message: DataTypes.STRING,
-    deleted: DataTypes.BOOLEAN
+    deleted:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'review',

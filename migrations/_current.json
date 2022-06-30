@@ -44,12 +44,6 @@
                     "field": "reviewId",
                     "seqType": "Sequelize.INTEGER(100)"
                 },
-                "UserId": {
-                    "model": "users",
-                    "key": "UserId",
-                    "field": "UserId",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "rating": {
                     "field": "rating",
                     "seqType": "Sequelize.INTEGER"
@@ -69,9 +63,24 @@
                     "field": "review_message",
                     "seqType": "Sequelize.STRING"
                 },
+                "userId": {
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "deleted": {
                     "field": "deleted",
                     "seqType": "Sequelize.BOOLEAN"
+                },
+                "userUserId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "UserId"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userUserId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -121,21 +130,10 @@
                     },
                     "field": "Deleted",
                     "seqType": "Sequelize.BOOLEAN"
-                },
-                "userUserId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "users",
-                        "key": "UserId"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "userUserId",
-                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
