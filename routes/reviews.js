@@ -14,26 +14,27 @@ router.delete("/deleted/:id", (req, res, next) => {
 
 });
 
-router.post("/createReview", (req, res, next) => {
+router.post("/createReview/:place_id", (req, res, next) => {
   let token = req.headers.authorization;
   authService.verifyUser(token)
-  .then(user => {
-    if (user) {
-      models.user.findOne(
-       { where: {UserId: user.UserId },
-       include: [{
-         model: models.place,
-         required: false
-       }]
-      })
-      .then(placesFound => {
-        console.log(placesFound)
+  // .then(user => {
+ //   if (user) {
+  //     models.user.findOne(
+  //      { where: {UserId: user.UserId },
+  //      include: [{
+  //        model: models.place,
+  //        required: false
+  //      }]
+  //     })
+      .then(user => {
+        // console.log(placesFound)
+        if (user) {
         models.review.create({
           review_message: req.body.review_message,
           rating: req.body.rating,
-          placePlaceId: placesFound.place_id,
+          placePlaceId:  req.params.place_id, // placesFound.place_id,
           //deleted: 0, // updated model to set default value instead
-          userId: user.UserId
+          // userId: user.userUserId
         }).then(response => {
           res.json({
             message: "created review",
@@ -41,11 +42,11 @@ router.post("/createReview", (req, res, next) => {
             review: response
           })
         });
-      })
+      //})
     } else {
       res.json({
-        message: "Token not verified",
-        status: 406
+        message: "Please Log In",
+        status: 401
       })
     }
   })
