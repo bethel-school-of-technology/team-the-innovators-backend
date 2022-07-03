@@ -95,37 +95,6 @@ router.get('/profile', function (req, res, next) {
   }
 });
 
-router.get("/", function(req, res, next){
-
-  let token = req.cookies.jwt;
-  if (token) {
-    authService.verifyUser(token)
-      .then(user => {
-        console.log(user);
-        if (user) {
-          const users = models.user.findAll().then(users => {
-            res.send(JSON.stringify(users));
-
-          });
-          
-        } else {
-          res.status(401);
-          res.send('Invalid authentication token');
-        }
-      });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
-
-  // if(req.user && req.user.Admin){
-  //  //findAll
-  //  //render and send all users to the view 
-  // } else{
-  //   res.redirect("unauthorized")
-  // }
-});
-
 // LOGOUT
 router.get('/logout', function (req, res, next) {
   res.cookie('jwt', "", { expires: new Date(0) });

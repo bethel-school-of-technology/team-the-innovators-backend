@@ -6,14 +6,6 @@ const { response } = require('../app');
 const authService = require("../services/auth");
 
 
-router.delete("/deleted/:id", (req, res, next) => {
-  const reviewId = req.params.id
-  models.review.delete({
-    where: { reviewId }
-  })
-
-});
-
 router.post("/createReview/:place_id", (req, res, next) => {
   let token = req.headers.authorization;
   authService.verifyUser(token)
@@ -51,22 +43,6 @@ router.post("/createReview/:place_id", (req, res, next) => {
     }
   })
 });
-
-// router.put("/editReview", (req, res, next) => {
-
-//   models.review.findByPk(req.body.reviewId).then(review => {
-//     //res.json(review);
-//     review.review_message = req.body.review_message;
-//     review.rating = req.body.rating;
-//     review.save().then(() => {
-//       res.json({
-//         message: "edited review",
-//         status: 200,
-//         review: review
-//       })
-//     });
-//   })
-// });
 
 // User edits review
 router.put('/editReview/:id', function (req, res, next) {
@@ -203,7 +179,28 @@ router.delete('/admin/reviews/:id', function (req, res, next) {
   }
 });
 
+// router.delete("/deleted/:id", (req, res, next) => {
+//   const reviewId = req.params.id
+//   models.review.delete({
+//     where: { reviewId }
+//   })
+// });
 
+// router.put("/editReview", (req, res, next) => {
+
+//   models.review.findByPk(req.body.reviewId).then(review => {
+//     //res.json(review);
+//     review.review_message = req.body.review_message;
+//     review.rating = req.body.rating;
+//     review.save().then(() => {
+//       res.json({
+//         message: "edited review",
+//         status: 200,
+//         review: review
+//       })
+//     });
+//   })
+// });
 
 module.exports = router;
 
